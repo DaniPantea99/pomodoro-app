@@ -6,4 +6,131 @@
 
 body {
     font-family: 'Mulish', sans-serif;
+    background-color: #242546;
+    color: white;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    margin: 0 auto;
+    padding: 50px 20px;
+}
+
+.title {
+    margin-bottom: 40px;
+    cursor: default;
+    filter: blur(0.5px);
+    letter-spacing: 1px;
+}
+
+.buttons {
+    background-color: #191a34;
+    border-radius: 50px;
+    padding: 8px;
+    cursor: pointer;
+    margin-bottom: 40px;
+}
+
+.button {
+    appearance: none;
+    border: none;
+    padding: 15px 20px;
+    border-radius: inherit;
+    background-color: transparent;
+    color: #5e6082;
+    letter-spacing: 1px;
+    cursor: inherit;
+}
+
+.button:hover {
+    background-color: #efa9a8;
+    color: #191a34;
+    transition: all 0.2s ease-in-out;
+}
+
+.button:active {
+    background-color: #ef7471;
+    color: #191a34;
+}
+
+.timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.outer-dial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 500px;
+    background: linear-gradient(-45deg, #2a2c51, #2a2c51, #171932, #171932);
+    box-shadow: 30px 30px 100px 0 #161832, -30px -30px 80px 0 #363975;
+    z-index: -1;
+}
+
+.inner-dial {
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 500px;
+    background-color: #171932;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+}
+
+.time {
+    cursor: default;
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #dae0fd;
+    font-family: 'Roboto', sans-serif;
+    z-index: 0;
+}
+
+.set-timer-state {
+    cursor: default;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-size: 12px;
+    color: #babcd6;
+    filter: blur(0.5px);
+    z-index: 0;
+}
+
+.circular-progress {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+    rotate: -90deg;
+}
+
+circle {
+    fill: none;
+    stroke: #f0766f;
+    stroke-width: 8px;
+    stroke-dasharray: 580;  /* 580 */
+    stroke-dashoffset: 580; 
+    animation: anim 3s linear forwards;
+}
+
+@keyframes anim {
+    100% {
+        stroke-dashoffset: 290;
+    }
 }

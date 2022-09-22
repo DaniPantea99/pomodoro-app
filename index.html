@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,23 +8,37 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
     <title>My pomodoro app</title>
 </head>
+
 <body>
-    
-    <h1 class="title">pomodoro</h1>
 
-    <div class="buttons">
-        <button class="button">pomodoro</button>
-        <button class="button">short break</button>
-        <button class="button">long break</button>
-    </div>
+    <div class="wrapper">
+        <h1 class="title">pomodoro</h1>
 
-    <div class="timer">
-        <div class="exterior-dial">
-            <div class="interior-dial">
-                <div class="circular-progress"></div>
+        <div class="buttons">
+            <button class="button">pomodoro</button>
+            <button class="button">short break</button>
+            <button class="button">long break</button>
+        </div>
+
+        <div class="timer">
+            <div class="outer-dial">
+                <div class="inner-dial"></div>
+
+                <div class="circular-progress">
+                    <svg >
+                        <circle cx="125" cy="125" r="92" stroke-linecap="round" />
+                    </svg>
+                </div>
                 <div class="time">17:59</div>
                 <p class="set-timer-state">pause</p>
             </div>
@@ -32,4 +47,5 @@
 
     <script src="./javascript/script.js"></script>
 </body>
+
 </html>
