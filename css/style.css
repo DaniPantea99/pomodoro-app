@@ -43,6 +43,7 @@ body {
     color: #5e6082;
     letter-spacing: 1px;
     cursor: inherit;
+    outline: none;
 }
 
 .button:hover {
@@ -51,15 +52,17 @@ body {
     transition: all 0.2s ease-in-out;
 }
 
-.button:active {
+.button.active {
     background-color: #ef7471;
     color: #191a34;
 }
 
 .timer {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .outer-dial {
@@ -89,6 +92,7 @@ body {
 }
 
 .time {
+    position: absolute;
     cursor: default;
     font-size: 50px;
     font-weight: 700;
@@ -98,14 +102,16 @@ body {
     z-index: 0;
 }
 
-.set-timer-state {
-    cursor: default;
+.start-timer {
+    position: absolute;
+    transform: translateY(40px);
+    cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 8px;
     font-size: 12px;
     color: #babcd6;
     filter: blur(0.5px);
-    z-index: 0;
+    /* z-index: 0; */
 }
 
 .circular-progress {
@@ -124,13 +130,27 @@ circle {
     fill: none;
     stroke: #f0766f;
     stroke-width: 8px;
-    stroke-dasharray: 580;  /* 580 */
-    stroke-dashoffset: 580; 
-    animation: anim 3s linear forwards;
+    stroke-dasharray: 580;  /* fill max value: 580 */
+    /* stroke-dashoffset: 580;  */
+    /* animation: anim 5s linear forwards; */
+    animation-duration: 3s;
+    animation-name: anim;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
-@keyframes anim {
+/* @keyframes anim {
     100% {
         stroke-dashoffset: 290;
     }
+} */
+
+@keyframes anim {
+    from {
+        stroke-dashoffset: 580;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
 }
+
