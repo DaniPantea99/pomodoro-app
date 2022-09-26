@@ -111,6 +111,7 @@ body {
     font-size: 12px;
     color: #babcd6;
     filter: blur(0.5px);
+    padding: 5px 3px 8px;
     /* z-index: 0; */
 }
 
@@ -131,26 +132,26 @@ circle {
     stroke: #f0766f;
     stroke-width: 8px;
     stroke-dasharray: 580;  /* fill max value: 580 */
-    /* stroke-dashoffset: 580;  */
+    stroke-dashoffset: 580; 
     /* animation: anim 5s linear forwards; */
-    animation-duration: 3s;
+    animation-duration: 0s;
     animation-name: anim;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
 }
 
-/* @keyframes anim {
-    100% {
-        stroke-dashoffset: 290;
-    }
-} */
-
 @keyframes anim {
+    0% {
+        stroke-dashoffset: 580;
+    }
+}
+ 
+/* @keyframes anim {
     from {
         stroke-dashoffset: 580;
     }
     to {
         stroke-dashoffset: 0;
     }
-}
+} */
 
