@@ -115,6 +115,12 @@ body {
     /* z-index: 0; */
 }
 
+.start-timer:hover {
+    filter: brightness(120%);
+    /* text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+    font-size: 14px; */
+}
+
 .circular-progress {
     position: absolute;
     width: 100%;

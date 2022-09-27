@@ -5,6 +5,9 @@ const time = document.querySelector(`.time`);
 const startTimerBtn = document.querySelector(`.start-timer`);
 const buttons = document.querySelector(`.buttons`)
 const circle = document.querySelector(`circle`);
+const finishAudio = document.querySelector('.finish-audio');
+const startAudio = document.querySelector('.start-audio');
+const pauseAudio = document.querySelector('.pause-audio');
 
 let intervalId = null;
 let stopWatch = null;
@@ -14,11 +17,11 @@ initStopWatch();
 function initStopWatch() {
     stopWatch = {
         pomodoro: {
-            minutes: 10,
+            minutes: 1,
             seconds: 0
         },
         shortBreak: {
-            minutes: 2,
+            minutes: 5,
             seconds: 0
         },
         longBreak: {
@@ -73,16 +76,16 @@ startTimerBtn.addEventListener('click', function() {
     clearInterval(intervalId)    
     
     if(startTimerBtn.innerText === 'start'.toUpperCase()) {
-        
-        if(getCountdownMin() != 0) {
-            startCountdown(getCountdownMin());
-            // startRadialProgress('100s');
-            startTimerBtn.innerText = 'pause';
-        } else {
+        if(getCountdownMin() === 0 && getCountdownSec() === 0) {
             alert('Alege o optiune');
+        } else {
+            startCountdown(getCountdownMin());
+            startAudio.play();
+            startTimerBtn.innerText = 'pause';
         }
     } else {
         startTimerBtn.innerText = 'start';
+        pauseAudio.play();
         const activeBtn = document.querySelector('.button.active')
         switch (activeBtn?.id) {
             case 'pomodoro':
@@ -112,8 +115,9 @@ startTimerBtn.addEventListener('click', function() {
 function startCountdown(minutes) {
     const activeBtn = document.querySelector('.button.active')
     let seconds = minutes * 60;
-    let progress = `${seconds}s`;
-    startRadialProgress(progress);
+    // const progress = `${seconds}s`;
+    const progress = minutes * 60;
+    startRadialProgress(`${progress}s`);
     switch (activeBtn?.id) {
         case 'pomodoro':
              seconds += stopWatch.pomodoro.seconds;
@@ -129,17 +133,19 @@ function startCountdown(minutes) {
         seconds--;
         if(seconds === 0) {
             clearInterval(intervalId);
+            finishAudio.play();
+            startTimerBtn.innerText = 'start';
         }
         let countdownMinutes = Math.floor(seconds / 60);
         let countdownSeconds = seconds - countdownMinutes * 60;
         if(countdownMinutes.toString().length === 1){
-            countdownMinutes = `0${countdownMinutes}`;
+            countdownMinutes = `${countdownMinutes}`;
         }
         if(countdownSeconds.toString().length === 1){
             countdownSeconds = `0${countdownSeconds}`;
         }
         time.innerText = `${countdownMinutes}:${countdownSeconds}`;
-    }, 1000);
+    }, 100);
 }
 
 function startRadialProgress(seconds) {
@@ -148,6 +154,6 @@ function startRadialProgress(seconds) {
 }
 
 function resetRadialProgress() {
-    circle.style.animationDuration = '0s';
+    // circle.style.animationDuration = '0s';
     circle.style.strokeDashoffset = '580';
 }
