@@ -14,7 +14,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 500px;
     margin: 0 auto;
     padding: 50px 20px;
 }
@@ -136,11 +135,11 @@ svg {
 circle {
     fill: none;
     stroke: #f0766f;
-    stroke-width: 8px;
+    stroke-width: 10px;
     /* stroke-linecap: round; */
     stroke-dasharray: 580;  /* fill max value: 580 */
     stroke-dashoffset: 580; 
-    animation: anim 0s linear forwards;
+    animation: anim linear forwards;
     /* animation-duration: 0s;
     animation-name: anim;
     animation-timing-function: linear;

@@ -19,15 +19,15 @@ initStopWatch();
 function initStopWatch() {
     stopWatch = {
         pomodoro: {
-            minutes: 3,
+            minutes: 25,
             seconds: 0
         },
         shortBreak: {
-            minutes: 1,
+            minutes: 5,
             seconds: 0
         },
         longBreak: {
-            minutes: 2,
+            minutes: 10,
             seconds: 0
         }
     }
@@ -174,9 +174,27 @@ function startCountdown(minutes) {
         if(seconds === 0) {
             clearInterval(intervalId);
             finishAudio.play();
-            removeAllActiveClass();
+
+           // --------------------
+            const activeBtn2 = document.querySelector('.button.active')
+            switch (activeBtn2?.id) {
+                case 'pomodoro':
+                    setTimer(stopWatch.pomodoro.minutes, pomodoroBtn);
+                    break;
+                case 'short-break':
+                    setTimer(stopWatch.shortBreak.minutes, shortBreakBtn);
+                    break;
+                case 'long-break':
+                    setTimer(stopWatch.longBreak.minutes, longBreakBtn);
+                    break;
+            }
+
+            // ---------------------------
+
+            resetRadialProgress();
+            // removeAllActiveClass();
             startTimerBtn.innerText = 'start';
-        }
+        } else {
         let countdownMinutes = Math.floor(seconds / 60);
         let countdownSeconds = seconds - countdownMinutes * 60;
         if(countdownMinutes.toString().length === 1){
@@ -186,7 +204,9 @@ function startCountdown(minutes) {
             countdownSeconds = `0${countdownSeconds}`;
         }
         time.innerText = `${countdownMinutes}:${countdownSeconds}`;
+    }
     }, 1000);
+     
 }
 
 function startRadialProgress(seconds) {
