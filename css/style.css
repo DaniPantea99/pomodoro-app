@@ -137,14 +137,16 @@ circle {
     fill: none;
     stroke: #f0766f;
     stroke-width: 8px;
+    /* stroke-linecap: round; */
     stroke-dasharray: 580;  /* fill max value: 580 */
     stroke-dashoffset: 580; 
-    /* animation: anim 5s linear forwards; */
-    animation-duration: 0s;
+    animation: anim 0s linear forwards;
+    /* animation-duration: 0s;
     animation-name: anim;
     animation-timing-function: linear;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards; */
 }
+
 
 @keyframes anim {
     0% {

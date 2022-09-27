@@ -12,20 +12,22 @@ const pauseAudio = document.querySelector('.pause-audio');
 let intervalId = null;
 let stopWatch = null;
 
+
+
 initStopWatch();
 
 function initStopWatch() {
     stopWatch = {
         pomodoro: {
-            minutes: 1,
+            minutes: 3,
             seconds: 0
         },
         shortBreak: {
-            minutes: 5,
+            minutes: 1,
             seconds: 0
         },
         longBreak: {
-            minutes: 5,
+            minutes: 2,
             seconds: 0
         }
     }
@@ -54,12 +56,16 @@ function setTimer(minutes, button) {
     startTimerBtn.innerText = 'start';
     time.innerText = `${minutes}:00`;
     // remove all other active class
-    [...buttons.children].forEach(element => {
-        element.classList.remove('active');
-    });
+    removeAllActiveClass();
     // set active class
     button.classList.add('active');
 };
+
+function removeAllActiveClass() {
+    [...buttons.children].forEach(element => {
+        element.classList.remove('active');
+    });
+}
 
 function getCountdownMin() {
     const countdownText = time.innerText;
@@ -73,19 +79,53 @@ function getCountdownSec() {
 
 startTimerBtn.addEventListener('click', function() {
     // countdown starts
-    clearInterval(intervalId)    
+    clearInterval(intervalId)   
+    // let progress = stopWatch.pomodoro.minutes * 60; 
     
     if(startTimerBtn.innerText === 'start'.toUpperCase()) {
         if(getCountdownMin() === 0 && getCountdownSec() === 0) {
             alert('Alege o optiune');
         } else {
             startCountdown(getCountdownMin());
+
+
+        // -----------------------------
+
+            const activeBtn2 = document.querySelector('.button.active')
+        switch (activeBtn2?.id) {
+            case 'pomodoro':
+                initStopWatch();
+                let progress1 = stopWatch.pomodoro.minutes * 60;
+                startRadialProgress(`${progress1}s`);
+                break;
+            case 'short-break':
+                initStopWatch();
+                let progress2 = stopWatch.shortBreak.minutes * 60;
+                startRadialProgress(`${progress2}s`);
+                break;
+            case 'long-break':
+                initStopWatch();
+                let progress3 = stopWatch.longBreak.minutes * 60;
+                startRadialProgress(`${progress3}s`);
+                break;
+            }
+
+            // ---------------------------------
+
+            
+            // startRadialProgress(`${progress}s`);
+
+
+            startAudio.currentTime = 0;
             startAudio.play();
             startTimerBtn.innerText = 'pause';
+            circle.style.animationPlayState = 'running';
         }
     } else {
         startTimerBtn.innerText = 'start';
+        pauseAudio.currentTime = 0;
         pauseAudio.play();
+        circle.style.animationPlayState = 'paused';
         const activeBtn = document.querySelector('.button.active')
         switch (activeBtn?.id) {
             case 'pomodoro':
@@ -116,8 +156,8 @@ function startCountdown(minutes) {
     const activeBtn = document.querySelector('.button.active')
     let seconds = minutes * 60;
     // const progress = `${seconds}s`;
-    const progress = minutes * 60;
-    startRadialProgress(`${progress}s`);
+    // const progress = minutes * 60;
+    // startRadialProgress(`${progress}s`);
     switch (activeBtn?.id) {
         case 'pomodoro':
              seconds += stopWatch.pomodoro.seconds;
@@ -134,6 +174,7 @@ function startCountdown(minutes) {
         if(seconds === 0) {
             clearInterval(intervalId);
             finishAudio.play();
+            removeAllActiveClass();
             startTimerBtn.innerText = 'start';
         }
         let countdownMinutes = Math.floor(seconds / 60);
@@ -145,15 +186,17 @@ function startCountdown(minutes) {
             countdownSeconds = `0${countdownSeconds}`;
         }
         time.innerText = `${countdownMinutes}:${countdownSeconds}`;
-    }, 100);
+    }, 1000);
 }
 
 function startRadialProgress(seconds) {
+    circle.style.animation = 'anim linear forwards';
     circle.style.animationDuration = seconds;
     circle.style.strokeDashoffset = '0';
+    // circle.offsetWidth;
 }
 
 function resetRadialProgress() {
-    // circle.style.animationDuration = '0s';
     circle.style.strokeDashoffset = '580';
+    circle.style.animation = 'none';
 }
