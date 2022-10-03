@@ -9,10 +9,19 @@ const finishAudio = document.querySelector('.finish-audio');
 const startAudio = document.querySelector('.start-audio');
 const pauseAudio = document.querySelector('.pause-audio');
 
+const settingsBtn = document.querySelector('.settings-gear');
+// const settingsContainer = document.querySelector('.settings-container');
+const settings = document.querySelector('.settings');
+const userSettings = document.querySelector('.user-settings');
+const userPomodoro = document.querySelector('input[name="user-pomodoro"]');
+const userShortbreak = document.querySelector('input[name="user-shortbreak"]');
+const userLongbreak = document.querySelector('input[name="user-longbreak"]');
+const applyBtn = document.querySelector('.btn-apply-settings');
+const closeSettings = document.querySelector('.close-settings');
+
 let intervalId = null;
 let stopWatch = null;
-
-
+let userStopWatch = "";
 
 initStopWatch();
 
@@ -33,23 +42,69 @@ function initStopWatch() {
     }
 }
 
+function setUserStopWatch() {
+    userStopWatch = {
+        pomodoro: userPomodoro.value,
+        shortBreak: userShortbreak.value,
+        longBreak: userLongbreak.value
+    }
+}
+
 pomodoroBtn.addEventListener('click', function() {
-    initStopWatch();
+    // initStopWatch();
+    setUserStopWatch();
     resetRadialProgress();
-    setTimer(stopWatch.pomodoro.minutes, pomodoroBtn);
+    setTimer(userStopWatch.pomodoro, pomodoroBtn);
 });
 
 shortBreakBtn.addEventListener('click', function() {
-    initStopWatch();
+    // initStopWatch();
+    setUserStopWatch();
     resetRadialProgress();
-    setTimer(stopWatch.shortBreak.minutes, shortBreakBtn);
+    setTimer(userStopWatch.shortBreak, shortBreakBtn);
 });
 
 longBreakBtn.addEventListener('click', function() {
-    initStopWatch();
+    // initStopWatch();
+    setUserStopWatch();
     resetRadialProgress();
-    setTimer(stopWatch.longBreak.minutes, longBreakBtn);
+    setTimer(userStopWatch.longBreak, longBreakBtn);
 });
+
+
+settingsBtn.addEventListener('click', () => {
+    settings.showModal();
+});
+
+applyBtn.addEventListener('click', () => {
+    // userStopWatch.pomodoro = userPomodoro.value; 
+    // userStopWatch.shortBreak = userShortbreak.value;
+    // userStopWatch.longBreak = userLongbreak.value;
+
+    const activeBtn = document.querySelector('.button.active')
+        switch (activeBtn?.id) {
+            case 'pomodoro':
+                time.innerText = `${userPomodoro.value}:00`;
+                break;
+            case 'short-break':
+                time.innerText = `${userShortbreak.value}:00`;
+                break;
+            case 'long-break':
+                initStopWatch();
+                time.innerText = `${userLongbreak.value}:00`;
+                break;
+            }
+
+    settings.close();
+});
+
+closeSettings.addEventListener('click', () => {
+    settings.close();
+    userPomodoro.value = "";
+    userShortbreak.value = "";
+    userLongbreak.value = "";
+});
+
 
 function setTimer(minutes, button) {
     clearInterval(intervalId);
