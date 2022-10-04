@@ -21,25 +21,21 @@ const closeSettings = document.querySelector(".close-settings");
 let intervalId = null;
 let stopWatch = null;
 let settingsObj = {
-  pomodoro: 1,
-  shortBreak: 2,
-  longBreak: 3,
+  pomodoro: 2,
+  shortBreak: 3,
+  longBreak: 4
 };
 
 pomodoroBtn.addEventListener("click", () => {
-  setUserStopWatch();
+  setUserStopWatch(); //
   resetRadialProgress();
   setTimer(stopWatch.pomodoro.minutes, 0, pomodoroBtn);
 });
 
 shortBreakBtn.addEventListener("click", () => {
-  if (intervalId !== null) {
-    alert("sigur?");
-  } else {
-    setUserStopWatch();
-    resetRadialProgress();
-    setTimer(stopWatch.shortBreak.minutes, 0, shortBreakBtn);
-  }
+  setUserStopWatch();
+  resetRadialProgress();
+  setTimer(stopWatch.shortBreak.minutes, 0, shortBreakBtn);
 });
 
 longBreakBtn.addEventListener("click", () => {
@@ -95,6 +91,7 @@ applyBtn.addEventListener("click", () => {
     stopWatch[activeBtn.id].seconds ?? 0,
     activeBtn
   );
+
   //   circle.style.animationPlayState = "paused";
   settings.close();
 });
@@ -102,12 +99,6 @@ applyBtn.addEventListener("click", () => {
 closeSettings.addEventListener("click", () => {
   settings.close();
 });
-
-
-
-
-
-
 
 function setUserStopWatch() {
   const activeBtn = document.querySelector(".button.active");
@@ -139,7 +130,6 @@ function setTimer(minutes, seconds, button) {
   // set active class
   button.classList.add("active");
 }
-
 
 function startCountdown(minutes) {
   const activeBtn = document.querySelector(".button.active");
@@ -196,7 +186,7 @@ function resetRadialProgress() {
 }
 
 function removeAllActiveClass() {
-    [...buttons.children].forEach((element) => {
-      element.classList.remove("active");
-    });
-  }
+  [...buttons.children].forEach((element) => {
+    element.classList.remove("active");
+  });
+}
