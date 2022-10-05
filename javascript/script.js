@@ -17,6 +17,7 @@ const userShortbreak = document.querySelector('input[name="user-shortbreak"]');
 const userLongbreak = document.querySelector('input[name="user-longbreak"]');
 const applyBtn = document.querySelector(".btn-apply-settings");
 const closeSettings = document.querySelector(".close-settings");
+const userSettingsInputs = document.querySelectorAll("input");
 
 let intervalId = null;
 let stopWatch = null;
@@ -25,6 +26,12 @@ let settingsObj = {
   shortBreak: 3,
   longBreak: 4
 };
+
+userSettingsInputs.forEach((element) => {
+  element.addEventListener("input", () => {
+    disableApplyBtnIfFormInvalid();
+  });
+});
 
 pomodoroBtn.addEventListener("click", () => {
   setUserStopWatch(); //
@@ -48,6 +55,7 @@ settingsBtn.addEventListener("click", () => {
   userPomodoro.value = settingsObj.pomodoro;
   userShortbreak.value = settingsObj.shortBreak;
   userLongbreak.value = settingsObj.longBreak;
+  disableApplyBtnIfFormInvalid();
   settings.showModal();
 });
 
@@ -57,7 +65,7 @@ startTimerBtn.addEventListener("click", () => {
   const activeBtn = document.querySelector(".button.active");
   if (startTimerBtn.innerText === "start".toUpperCase()) {
     if (getCountdownMin() === 0 && getCountdownSec() === 0) {
-      alert("Alege o optiune");
+      alert("Nothing selected! Please select one category!");
     } else {
       startCountdown(getCountdownMin());
       setUserStopWatch();
@@ -73,12 +81,12 @@ startTimerBtn.addEventListener("click", () => {
     pauseAudio.currentTime = 0;
     pauseAudio.play();
     circle.style.animationPlayState = "paused";
-    stopWatch[activeBtn.id] = {
-      minutes: getCountdownMin(),
-      seconds: getCountdownSec(),
-    };
+    updateStopWatch();
   }
 });
+
+
+
 
 applyBtn.addEventListener("click", () => {
   settingsObj.pomodoro = userPomodoro.value;
@@ -86,12 +94,18 @@ applyBtn.addEventListener("click", () => {
   settingsObj.longBreak = userLongbreak.value;
   setUserStopWatch();
   const activeBtn = document.querySelector(".button.active");
-  setTimer(
-    settingsObj[activeBtn.id],
-    stopWatch[activeBtn.id].seconds ?? 0,
-    activeBtn
-  );
-
+  if (stopWatch[activeBtn.id].seconds != 0) {
+    let newMinutes = settingsObj[activeBtn.id] - 1;
+    setTimer(newMinutes, stopWatch[activeBtn.id].seconds ?? 0, activeBtn);
+    // startCountdown();
+  } else {
+    setTimer(
+      settingsObj[activeBtn.id],
+      stopWatch[activeBtn.id].seconds ?? 0,
+      activeBtn
+    );
+  }
+  // startCountdown();
   //   circle.style.animationPlayState = "paused";
   settings.close();
 });
@@ -105,16 +119,16 @@ function setUserStopWatch() {
   stopWatch = {
     pomodoro: {
       minutes: settingsObj.pomodoro,
-      seconds: getCountdownSec(activeBtn),
+      seconds: getCountdownSec(activeBtn)
     },
     shortBreak: {
       minutes: settingsObj.shortBreak,
-      seconds: getCountdownSec(activeBtn),
+      seconds: getCountdownSec(activeBtn)
     },
     longBreak: {
       minutes: settingsObj.longBreak,
-      seconds: getCountdownSec(activeBtn),
-    },
+      seconds: getCountdownSec(activeBtn)
+    }
   };
 }
 
@@ -137,6 +151,7 @@ function startCountdown(minutes) {
   seconds += stopWatch[activeBtn.id].seconds ?? 0;
   intervalId = setInterval(() => {
     seconds--;
+    // updateStopWatch();
     if (seconds === 0) {
       clearInterval(intervalId);
       finishAudio.play();
@@ -189,4 +204,20 @@ function removeAllActiveClass() {
   [...buttons.children].forEach((element) => {
     element.classList.remove("active");
   });
+}
+
+function disableApplyBtnIfFormInvalid() {
+  if (userSettings.checkValidity()) {
+    applyBtn.removeAttribute("disabled");
+  } else {
+    applyBtn.setAttribute("disabled", true);
+  }
+}
+
+function updateStopWatch() {
+  const activeBtn = document.querySelector(".button.active");
+  stopWatch[activeBtn.id] = {
+    minutes: getCountdownMin(),
+    seconds: getCountdownSec(),
+  }
 }
