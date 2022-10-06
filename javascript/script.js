@@ -4,6 +4,7 @@ const longBreakBtn = document.querySelector(`#longBreak`);
 const time = document.querySelector(`.time`);
 const startTimerBtn = document.querySelector(`.start-timer`);
 const buttons = document.querySelector(`.buttons`);
+
 const circle = document.querySelector(`circle`);
 const finishAudio = document.querySelector(".finish-audio");
 const startAudio = document.querySelector(".start-audio");
@@ -67,8 +68,8 @@ startTimerBtn.addEventListener("click", () => {
     if (getCountdownMin() === 0 && getCountdownSec() === 0) {
       alert("Nothing selected! Please select one category!");
     } else {
-      startCountdown(getCountdownMin());
       setUserStopWatch();
+      startCountdown(getCountdownMin());
       let progress = stopWatch[activeBtn.id].minutes * 60;
       startRadialProgress(`${progress}s`);
       startAudio.currentTime = 0;
@@ -81,12 +82,9 @@ startTimerBtn.addEventListener("click", () => {
     pauseAudio.currentTime = 0;
     pauseAudio.play();
     circle.style.animationPlayState = "paused";
-    updateStopWatch();
+    // updateStopWatch();
   }
 });
-
-
-
 
 applyBtn.addEventListener("click", () => {
   settingsObj.pomodoro = userPomodoro.value;
@@ -96,8 +94,8 @@ applyBtn.addEventListener("click", () => {
   const activeBtn = document.querySelector(".button.active");
   if (stopWatch[activeBtn.id].seconds != 0) {
     let newMinutes = settingsObj[activeBtn.id] - 1;
+    stopWatch[activeBtn.id].minutes = newMinutes;
     setTimer(newMinutes, stopWatch[activeBtn.id].seconds ?? 0, activeBtn);
-    // startCountdown();
   } else {
     setTimer(
       settingsObj[activeBtn.id],
@@ -105,8 +103,6 @@ applyBtn.addEventListener("click", () => {
       activeBtn
     );
   }
-  // startCountdown();
-  //   circle.style.animationPlayState = "paused";
   settings.close();
 });
 
@@ -146,23 +142,25 @@ function setTimer(minutes, seconds, button) {
 }
 
 function startCountdown(minutes) {
+  // selectez butonul activ
   const activeBtn = document.querySelector(".button.active");
+  // aflu si salvez totatul de secunde in functie de cate minute sunt pe ecran
   let seconds = minutes * 60;
+  // la totalul de secunde adaug secundele din stopWatch al butonului activ daca secundele din stop Watch diferit de null?
   seconds += stopWatch[activeBtn.id].seconds ?? 0;
-  intervalId = setInterval(() => {
-    seconds--;
-    // updateStopWatch();
-    if (seconds === 0) {
-      clearInterval(intervalId);
-      finishAudio.play();
-      setTimer(
+  intervalId = setInterval(() => { // atribui functia setInterval la intervaliId 
+    seconds--; // decrementez secundele
+    if (seconds === 0) { // verific daca secundele sunt egale cu zero
+      clearInterval(intervalId); // daca secundele sunt zero atunci resetez intervalul
+      finishAudio.play(); // pornesc audio
+      setTimer( // setez timerul cu valorile din stopWatch in functie de butonul activ
         stopWatch[activeBtn.id].minutes,
         stopWatch[activeBtn.id].seconds ?? 0,
         activeBtn
       );
       resetRadialProgress();
       startTimerBtn.innerText = "start";
-    } else {
+    } else { // daca secundele nu sunt agale cu zero atunci
       let countdownMinutes = Math.floor(seconds / 60);
       let countdownSeconds = seconds - countdownMinutes * 60;
       if (countdownMinutes.toString().length === 1) {
@@ -173,21 +171,11 @@ function startCountdown(minutes) {
       }
       time.innerText = `${countdownMinutes}:${countdownSeconds}`;
     }
+    updateStopWatch();
   }, 1000);
 }
 
-function getCountdownMin() {
-  const countdownText = time.innerText;
-  return Number(countdownText.toString().split(":")[0]);
-}
 
-function getCountdownSec(activeBtn) {
-  if (activeBtn) {
-    return stopWatch[activeBtn.id].seconds;
-  }
-  const countdownText = time.innerText;
-  return Number(countdownText.toString().split(":")[1]);
-}
 
 function startRadialProgress(seconds) {
   circle.style.animation = "anim linear forwards";
@@ -214,10 +202,28 @@ function disableApplyBtnIfFormInvalid() {
   }
 }
 
+
+// ce face Functia updateStopWatch ?
+// actualizeaza stopWatch pentru butonul activ cu:
+// minute = minutele de pe ecran
+// secunde = cu secundele de pe ecran
 function updateStopWatch() {
   const activeBtn = document.querySelector(".button.active");
   stopWatch[activeBtn.id] = {
     minutes: getCountdownMin(),
-    seconds: getCountdownSec(),
+    seconds: getCountdownSec()
   }
+}
+
+function getCountdownMin() { // returneaza minutele
+  const countdownText = time.innerText;
+  return Number(countdownText.toString().split(":")[0]);
+}
+
+function getCountdownSec(activeBtn) {
+  if (activeBtn) {
+    return stopWatch[activeBtn.id].seconds;
+  }
+  const countdownText = time.innerText;
+  return Number(countdownText.toString().split(":")[1]);
 }
