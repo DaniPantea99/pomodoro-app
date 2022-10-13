@@ -1,3 +1,7 @@
+import { highlightActiveBtn, changeStartPauseBtnState } from './utilities.mjs'
+
+export {btnStartPause, allBtns}
+
 const btnPomodoro = document.getElementById('pomodoro')
 const btnShortbreak = document.getElementById('shortBreak')
 const btnLongbreak = document.getElementById('longBreak')
@@ -18,6 +22,7 @@ const btnApplySettings = document.getElementsByClassName('btn-apply-settings')
 const bntCloseSettings = document.getElementsByClassName('close-settings')
 const allInputs = document.querySelectorAll('input')
 
+let intervalId = null;
 
 let setTime = {
     pomodoro: {
@@ -36,26 +41,49 @@ let setTime = {
 
 allBtns.forEach((button) => {
     button.addEventListener('click', () => {
-        timeDisplayed.innerText = `${setTime[button.id].minutes}:0${setTime[button.id].seconds}`;
+        setTimer(button);
         highlightActiveBtn(button);
+        if(btnStartPause.innerText = 'pause'.toUpperCase()){
+            changeStartPauseBtnState();
+        }
     })
 })
-
-function highlightActiveBtn(button) {
-    allBtns.forEach((element) => {
-        element.classList.remove('active');
-    })
-    button.classList.add('active');
-}
 
 btnStartPause.addEventListener('click', () => {
-    changeStartPauseBtnState();
+    if(btnStartPause.innerText = 'start'.toUpperCase()){
+        const activeBtn = document.querySelector('.button.active');
+        changeStartPauseBtnState();
+        startCountdown(setTime[activeBtn.id].minutes);
+    } else {
+        changeStartPauseBtnState();
+        stopCountdown();
+    }
 })
 
-function changeStartPauseBtnState() {
-    if(btnStartPause.innerText === 'start'.toUpperCase()) {
-        btnStartPause.innerText = 'pause'.toUpperCase();
+function setTimer(button) {
+    if(setTime[button.id].seconds < 10) {
+        timeDisplayed.innerText = `${setTime[button.id].minutes}:0${setTime[button.id].seconds}`;
     } else {
-        btnStartPause.innerText = 'start'.toUpperCase();
+        timeDisplayed.innerText = `${setTime[button.id].minutes}:${setTime[button.id].seconds}`;
     }
+}
+
+function startCountdown(minutes) {
+    let seconds = minutes * 60;
+    intervalId = setInterval(() => {
+        seconds--;
+        let countdownMinutes = Math.floor(seconds / 60);
+        let countdownSeconds = seconds - countdownMinutes * 60;
+        if (countdownMinutes.toString().length === 1) {
+            countdownMinutes = `${countdownMinutes}`;
+          }
+          if (countdownSeconds.toString().length === 1) {
+            countdownSeconds = `0${countdownSeconds}`;
+          }
+          timeDisplayed.innerText = `${countdownMinutes}:${countdownSeconds}`;
+    }, 1000);
+}
+
+function stopCountdown() {
+    clearInterval(intervalId);
 }
