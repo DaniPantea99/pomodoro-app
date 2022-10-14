@@ -39,27 +39,34 @@ let setTime = {
     }
 }
 
+
+// adaug click event pt butoanele pomodoro, shortbreak si longbreak
 allBtns.forEach((button) => {
     button.addEventListener('click', () => {
-        setTimer(button);
-        highlightActiveBtn(button);
+        setTimer(button); // seteaza timpul in functie de butonul apasat - ia valoarea din obiectul setTime si o afiseaza
+        highlightActiveBtn(button); // adauga clasa active doar la butonul activ
         if(btnStartPause.innerText = 'pause'.toUpperCase()){
-            changeStartPauseBtnState();
+            changeStartPauseBtnState(); // schimba butonul Pause in Start
         }
     })
 })
 
+// adaug click event pt btn StartPause
 btnStartPause.addEventListener('click', () => {
-    if(btnStartPause.innerText = 'start'.toUpperCase()){
-        const activeBtn = document.querySelector('.button.active');
-        changeStartPauseBtnState();
-        startCountdown(setTime[activeBtn.id].minutes);
-    } else {
-        changeStartPauseBtnState();
-        stopCountdown();
+    if(btnStartPause.innerText === 'start'.toUpperCase()){ // daca butonul arata Start
+        const activeBtn = document.querySelector('.button.active');  // apuc butonul cu clasa active
+        changeStartPauseBtnState(); // schimb btn Start in Pause
+        startCountdown(setTime[activeBtn.id].minutes); // incep numaratoarea inversa in functie de minutele butonului activ
+    } else { // daca butonul arata Pause
+        changeStartPauseBtnState(); // schimb bnt Pause in Start
+        stopCountdown(); // opresc numaratorea inversa
+
+        // salvez noul timp in obiectul setTime
+        
     }
 })
 
+// setaza timpului in functie de butonul activ - ia valoarea din obiectul setTime si il afiseaza
 function setTimer(button) {
     if(setTime[button.id].seconds < 10) {
         timeDisplayed.innerText = `${setTime[button.id].minutes}:0${setTime[button.id].seconds}`;
@@ -87,3 +94,16 @@ function startCountdown(minutes) {
 function stopCountdown() {
     clearInterval(intervalId);
 }
+
+function getCountdownMin() { 
+    const countdownText = timeDisplayed.innerText;
+    return Number(countdownText.toString().split(":")[0]);
+  }
+  
+  function getCountdownSec(activeBtn) {
+    if (activeBtn) {
+      return setTime[activeBtn.id].seconds;
+    }
+    const countdownText = timeDisplayed.innerText;
+    return Number(countdownText.toString().split(":")[1]);
+  }
