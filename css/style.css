@@ -19,10 +19,21 @@ body {
 }
 
 .title {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     cursor: default;
     filter: blur(0.5px);
     letter-spacing: 1px;
+}
+
+/* Session Counter */
+.session-counter {
+    background-color: #191a34;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #efa9a8;
+    margin-bottom: 25px;
+    font-weight: 600;
 }
 
 .buttons {
@@ -118,7 +129,6 @@ body {
     color: #ffffff;
     filter: blur(0px);
     padding: 5px 3px 8px;
-    /* Removed pointer-events: none to allow clicks to trigger the timer */
     cursor: pointer;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
     z-index: 3;
@@ -127,8 +137,6 @@ body {
 
 .start-timer:hover {
     filter: brightness(120%);
-    /* text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
-    font-size: 14px; */
 }
 
 .circular-progress {
@@ -148,14 +156,9 @@ circle {
     fill: none;
     stroke: #f0766f;
     stroke-width: 10px;
-    /* stroke-linecap: round; */
-    stroke-dasharray: 580;  /* fill max value: 580 */
-    stroke-dashoffset: 580; 
+    stroke-dasharray: 580;
+    stroke-dashoffset: 580;
     animation: anim linear forwards;
-    /* animation-duration: 0s;
-    animation-name: anim;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards; */
 }
 
 
@@ -167,55 +170,57 @@ circle {
         stroke-dashoffset: 0;
     }
 }
- 
-/* @keyframes anim {
-    from {
-        stroke-dashoffset: 580;
-    }
-    to {
-        stroke-dashoffset: 0;
-    }
-} */
 
-.settings-gear {
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.settings-gear,
+.task-list-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-size: 1.5rem;
     color: #dce0fc;
-    /* transition: transform 0.6s ease-in-out;
-    transform: rotate(180deg); */
+    transition: all 0.3s ease;
 }
 
-.settings-gear:hover {
-    color: #777886;
-    /* transition: transform 0.6s ease-in-out;
-    transform: rotate(180deg); */
+.settings-gear:hover,
+.task-list-btn:hover {
+    color: #efa9a8;
+    transform: rotate(15deg);
 }
 
+.task-list-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Settings Dialog */
 .settings {
     overflow: visible;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 400px;
-    min-height: 400px;
-    height: 400px;
+    max-width: 450px;
+    min-height: 500px;
     background: white;
     border: 0;
     border-radius: 1rem;
     color: black;
     padding: 1rem;
-    /* transition: all 30s ease-in-out; */
 }
 
 .settings::backdrop {
     background: rgba(0 0 0 / 0.5)
 }
 
-.close-settings {
+.close-settings,
+.close-task-panel {
     position: absolute;
     top: 10px;
     right: 20px;
@@ -225,12 +230,15 @@ circle {
     font-size: 1.2rem;
 }
 
-.close-settings:hover {
+.close-settings:hover,
+.close-task-panel:hover {
     color: black;
 }
 
 .settings h2,
-.settings p {
+.settings p,
+.task-panel h2,
+.task-panel p {
     cursor: default;
 }
 
@@ -242,6 +250,7 @@ circle {
 .settings p {
     text-transform: uppercase;
     font-size: 0.8rem;
+    color: #666;
 }
 
 .user-settings {
@@ -253,6 +262,8 @@ circle {
 
 .user-settings label {
     font-size: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
 .user-settings input {
@@ -269,6 +280,90 @@ circle {
 .user-settings input:invalid {
     box-shadow: 0 0 3px 1px red;
     color: grey;
+}
+
+/* Settings Options (toggles) */
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.toggle-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    margin: 5px 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 22px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #ef7471;
+}
+
+input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
+/* Volume Slider */
+#volume-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e6e6e6;
+    outline: none;
+    margin-top: 5px;
+    -webkit-appearance: none;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ef7471;
+    cursor: pointer;
 }
 
 .btn-apply-settings {
@@ -294,3 +389,194 @@ circle {
     background-color: #797575;
 }
 
+/* Task Panel */
+.task-panel {
+    overflow: visible;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    min-height: 350px;
+    max-height: 500px;
+    background: white;
+    border: 0;
+    border-radius: 1rem;
+    color: black;
+    padding: 1rem;
+}
+
+.task-panel::backdrop {
+    background: rgba(0 0 0 / 0.5)
+}
+
+.task-input-container {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.task-input {
+    flex: 1;
+    height: 40px;
+    border: none;
+    background-color: #e6e6e6;
+    border-radius: 5px;
+    padding: 5px 15px;
+    outline: none;
+    font-family: inherit;
+}
+
+.task-input:focus {
+    box-shadow: 0 0 0 2px #ef7471;
+}
+
+.add-task-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: #ef7471;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+}
+
+.add-task-btn:hover {
+    background-color: #e65c59;
+    transform: scale(1.05);
+}
+
+.task-list {
+    list-style: none;
+    max-height: 250px;
+    overflow-y: auto;
+    margin: 10px 0;
+    padding-right: 5px;
+}
+
+/* Custom scrollbar */
+.task-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.task-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-item:hover {
+    background-color: #eee;
+}
+
+.task-item.active {
+    background-color: #fef3f3;
+    border-left: 3px solid #ef7471;
+}
+
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+}
+
+.task-text {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #333;
+    word-break: break-word;
+}
+
+.task-pomodoros {
+    font-size: 0.8rem;
+    color: #888;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.delete-task {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background-color: transparent;
+    color: #999;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.delete-task:hover {
+    background-color: #ff4444;
+    color: white;
+}
+
+.task-counter {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+.task-hint {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.task-hint small {
+    color: #999;
+    font-size: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .buttons {
+        min-width: 280px;
+    }
+    
+    .button {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .outer-dial {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .inner-dial {
+        width: 185px;
+        height: 185px;
+    }
+    
+    .time {
+        font-size: 42px;
+    }
+    
+    .settings,
+    .task-panel {
+        max-width: 90vw;
+    }
+}
